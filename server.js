@@ -1,11 +1,10 @@
 const express = require('express')
 const app = express()
 
-app.get("/", (request, response) => {
-    console.log("visitor on main route")
-    response.status(404)
-    response.send("Hello! My name is John.")
-})
+const answers = []
+
+app.use(express.static("public"))
+app.use(express.json())
 
 app.get("/movies", (request, response) => {
     console.log(request.ip + " visited /movies")
@@ -14,7 +13,10 @@ app.get("/movies", (request, response) => {
 })
 
 app.post("/poll", (request, response) => {
-    console.log("poll submitted")
+    const answer = request.body.answer
+    answers.push(answer)
+    console.log("someone voted "+answer)
+    response.send(answers)
 })
 
 //starts a web server listening on port 3000
